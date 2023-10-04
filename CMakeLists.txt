@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(kod
   VERSION 1.0.0
-  DESCRIPTION "The Kod library"
+  DESCRIPTION "The Kod Library"
   LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
