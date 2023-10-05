@@ -10,6 +10,7 @@ set(CMAKE_C_STANDARD 11)
 
 if(MSVC)
   add_compile_options(/W4 /WX)
+  add_definitions(-DKOD_API_DLLEXPORT)
 else()
   add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 endif()
@@ -17,6 +18,9 @@ endif()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
 
 set(SOURCES
+  src/config.c
+  src/status.c
+  src/string.c
   src/value.c)
 
 set(STATIC_LIB ${PROJECT_NAME}-static)
@@ -38,4 +42,4 @@ install(TARGETS ${STATIC_LIB} ${SHARED_LIB}
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  FILES_MATCHING PATTERN "*.h")
+  FILES_MATCHING PATTERN "*.h*")

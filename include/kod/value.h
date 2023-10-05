@@ -9,10 +9,6 @@
 #include <stdint.h>
 #include "common.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define KOD_FLAG_NONE   0x00
 #define KOD_FLAG_FALSY  0x01
 #define KOD_FLAG_OBJECT 0x02
@@ -40,6 +36,23 @@ extern "C" {
 #define kod_as_rune(v)    ((v).asRune)
 #define kod_as_string(v)  ((KodString *) (v).asPointer)
 #define kod_as_object(v)  ((KodObject *) (v).asPointer)
+
+#define kod_object_init(o) \
+  do { \
+    ((KodObject *) (o)->refCount)->refCount = 0; \
+  } while (0)
+
+#define kod_ref_count(o) ((KodObject *) (o)->refCount)
+
+#define kod_inc_ref(o) \
+  do { \
+    ++((KodObject *) (o)->refCount); \
+  } while (0)
+
+#define kod_dec_ref(o) \
+  do { \
+    --((KodObject *) (o)->refCount); \
+  } while (0)
 
 #define kod_value_retain(v) \
   do { \
@@ -76,10 +89,7 @@ typedef struct
 } KodObject;
 
 KOD_API const char *kod_type_name(KodType type);
+KOD_API void kod_value_free(KodValue val);
 KOD_API void kod_value_release(KodValue val);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // KOD_VALUE_H

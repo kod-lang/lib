@@ -28,6 +28,12 @@ const char *kod_type_name(KodType type)
   return name;
 }
 
+void kod_value_free(KodValue val)
+{
+  // TODO: Implement this function.
+  (void) val;
+}
+
 void kod_value_release(KodValue val)
 {
   // TODO: Implement this function.

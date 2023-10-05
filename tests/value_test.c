@@ -8,7 +8,8 @@
 #include "kod/value.h"
 
 static inline void value_type_name_test(void);
-static inline void value_retain_release_test(void);
+static inline void value_free_test(void);
+static inline void value_release_test(void);
 
 static inline void value_type_name_test(void)
 {
@@ -19,7 +20,13 @@ static inline void value_type_name_test(void)
   assert(!strcmp(kod_type_name(KOD_TYPE_STRING), "string"));
 }
 
-static inline void value_retain_release_test(void)
+static inline void value_free_test(void)
+{
+  // TODO: Implement this function.
+  assert(1);
+}
+
+static inline void value_release_test(void)
 {
   // TODO: Implement this function.
   assert(1);
@@ -28,6 +35,7 @@ static inline void value_retain_release_test(void)
 int main(void)
 {
   value_type_name_test();
-  value_retain_release_test();
+  value_free_test();
+  value_release_test();
   return EXIT_SUCCESS;
 }

@@ -5,6 +5,6 @@
 #ifndef KOD_H
 #define KOD_H
 
-#include "kod/value.h"
+#include "kod/string.h"
 
 #endif // KOD_H
