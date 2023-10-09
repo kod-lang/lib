@@ -5,9 +5,8 @@
 #ifndef KOD_VALUE_H
 #define KOD_VALUE_H
 
-#include <stdbool.h>
 #include <stdint.h>
-#include "common.h"
+#include "memory.h"
 
 #define KOD_FLAG_NONE   0x00
 #define KOD_FLAG_FALSY  0x01
@@ -39,19 +38,19 @@
 
 #define kod_object_init(o) \
   do { \
-    ((KodObject *) (o)->refCount)->refCount = 0; \
+    (o)->refCount = 0; \
   } while (0)
 
-#define kod_ref_count(o) ((KodObject *) (o)->refCount)
+#define kod_ref_count(o) ((o)->refCount)
 
 #define kod_inc_ref(o) \
   do { \
-    ++((KodObject *) (o)->refCount); \
+    ++(o)->refCount; \
   } while (0)
 
 #define kod_dec_ref(o) \
   do { \
-    --((KodObject *) (o)->refCount); \
+    --(o)->refCount; \
   } while (0)
 
 #define kod_value_retain(v) \
@@ -89,7 +88,7 @@ typedef struct
 } KodObject;
 
 KOD_API const char *kod_type_name(KodType type);
-KOD_API void kod_value_free(KodValue val);
-KOD_API void kod_value_release(KodValue val);
+KOD_API void kod_value_free(KodValue val, KodMemory *mem);
+KOD_API void kod_value_release(KodValue val, KodMemory *mem);
 
 #endif // KOD_VALUE_H

@@ -18,9 +18,10 @@ endif()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
 
 set(SOURCES
-  src/config.c
+  src/memory.c
   src/status.c
   src/string.c
+  src/utils.c
   src/value.c)
 
 set(STATIC_LIB ${PROJECT_NAME}-static)

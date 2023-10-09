@@ -3,7 +3,7 @@
 //
 
 #include "kod/value.h"
-#include <stddef.h>
+#include "kod/string.h"
 
 const char *kod_type_name(KodType type)
 {
@@ -28,14 +28,30 @@ const char *kod_type_name(KodType type)
   return name;
 }
 
-void kod_value_free(KodValue val)
+void kod_value_free(KodValue val, KodMemory *mem)
 {
-  // TODO: Implement this function.
-  (void) val;
+  switch (kod_type(val))
+  {
+  case KOD_TYPE_NULL:
+  case KOD_TYPE_BOOLEAN:
+  case KOD_TYPE_NUMBER:
+  case KOD_TYPE_RUNE:
+    break;
+  case KOD_TYPE_STRING:
+    kod_string_free(kod_as_string(val), mem);
+  }
 }
 
-void kod_value_release(KodValue val)
+void kod_value_release(KodValue val, KodMemory *mem)
 {
-  // TODO: Implement this function.
-  (void) val;
+  switch (kod_type(val))
+  {
+  case KOD_TYPE_NULL:
+  case KOD_TYPE_BOOLEAN:
+  case KOD_TYPE_NUMBER:
+  case KOD_TYPE_RUNE:
+    break;
+  case KOD_TYPE_STRING:
+    kod_string_release(kod_as_string(val), mem);
+  }
 }
