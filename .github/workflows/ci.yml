@@ -29,6 +29,7 @@ jobs:
     - name: Generating coverage report
       run: |
         lcov --capture --directory build --output-file lcov.info
+        lcov --remove lcov.info '*_test.c' --output-file lcov.info
 
     - name: Uploading coverage report
       env:
