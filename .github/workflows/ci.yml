@@ -15,11 +15,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Installing lcov
+      run: sudo apt-get install lcov -y
+
     - name: Building
-      run: ${{ github.workspace }}/build.sh
+      run: |
+        cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="--coverage"
+        cmake --build build
 
     - name: Testing
       run: ${{ github.workspace }}/test.sh
+
+    - name: Generating coverage report
+      run: |
+        lcov --capture --directory build --output-file lcov.info
+
+    - name: Uploading coverage report
+      env:
+        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      run: |
+        bash <(curl -Ls https://coverage.codacy.com/get.sh)
 
   macos:
     runs-on: macos-latest
