@@ -6,12 +6,12 @@
 #include <stdlib.h>
 #include "kod/memory.h"
 
-static inline void memory_init_test(void);
-static inline void memory_alloc_test(void);
-static inline void memory_realloc_test(void);
 static void *memory_alloc(size_t size, void *udata);
 static void *memory_realloc(void *ptr, size_t size, void *udata);
 static void memory_free(void *ptr, void *udata);
+static inline void memory_init_test(void);
+static inline void memory_alloc_test(void);
+static inline void memory_realloc_test(void);
 
 static void *memory_alloc(size_t size, void *udata)
 {

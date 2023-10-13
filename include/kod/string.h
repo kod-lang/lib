@@ -29,11 +29,11 @@ typedef struct
 
 KOD_API void kod_string_init(KodString *str, KodMemory *mem, KodStatus *status);
 KOD_API void kod_string_init_with_capacity(KodString *str, int capacity, KodMemory *mem, KodStatus *status);
-KOD_API void kod_string_init_from(KodString *str, int count, const char *chars, KodMemory *mem, KodStatus *status);
+KOD_API void kod_string_init_from(KodString *str, const char *chars, KodMemory *mem, KodStatus *status);
 KOD_API void kod_string_deinit(KodString *str, KodMemory *mem);
 KOD_API KodString *kod_string_new(KodMemory *mem, KodStatus *status);
 KOD_API KodString *kod_string_new_with_capacity(int capacity, KodMemory *mem, KodStatus *status);
-KOD_API KodString *kod_string_new_from(int count, const char *chars, KodMemory *mem, KodStatus *status);
+KOD_API KodString *kod_string_new_from(const char *chars, KodMemory *mem, KodStatus *status);
 KOD_API void kod_string_free(KodString *str, KodMemory *mem);
 KOD_API void kod_string_release(KodString *str, KodMemory *mem);
 KOD_API uint32_t kod_string_hash(KodString *str);
