@@ -1,6 +1,14 @@
 
 enable_testing()
 
+add_executable(chunk-test
+  ../src/chunk.c
+  ../src/memory.c
+  ../src/status.c
+  ../src/string.c
+  ../src/utils.c
+  chunk_test.c)
+
 add_executable(memory-test
   ../src/memory.c
   ../src/status.c
@@ -29,6 +37,7 @@ add_executable(value-test
   ../src/value.c
   value_test.c)
 
+add_test(NAME chunk-test  COMMAND chunk-test)
 add_test(NAME memory-test COMMAND memory-test)
 add_test(NAME status-test COMMAND status-test)
 add_test(NAME string-test COMMAND string-test)
