@@ -95,5 +95,7 @@ typedef struct
 KOD_API const char *kod_type_name(KodType type);
 KOD_API void kod_value_free(KodValue val, KodMemory *mem);
 KOD_API void kod_value_release(KodValue val, KodMemory *mem);
+KOD_API bool kod_value_equal(KodValue val1, KodValue val2);
+KOD_API int kod_value_compare(KodValue val1, KodValue val2, KodStatus *status);
 
 #endif // KOD_VALUE_H

@@ -37,5 +37,7 @@ KOD_API KodString *kod_string_new_from(const char *chars, KodMemory *mem, KodSta
 KOD_API void kod_string_free(KodString *str, KodMemory *mem);
 KOD_API void kod_string_release(KodString *str, KodMemory *mem);
 KOD_API uint32_t kod_string_hash(KodString *str);
+KOD_API bool kod_string_equal(KodString *str1, KodString *str2);
+KOD_API int kod_string_compare(KodString *str1, KodString *str2);
 
 #endif // KOD_STRING_H

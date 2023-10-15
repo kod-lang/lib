@@ -30,6 +30,8 @@ static inline void string_new_from_ascii_test(void);
 static inline void string_new_from_utf8_test(void);
 static inline void string_release_test(void);
 static inline void string_hash_test(void);
+static inline void string_equal_test(void);
+static inline void string_compare_test(void);
 
 static void *memory_alloc(size_t size, void *udata)
 {
@@ -184,13 +186,55 @@ static inline void string_hash_test(void)
 {
   KodStatus status;
   kod_status_ok(&status);
-  KodString *str = kod_string_new_from("foo", &mem, &status);
+  KodString str;
+  kod_string_init_from(&str, "foo", &mem, &status);
   assert(status.isOk);
   uint32_t expected = 0xa9f37ed7;
-  uint32_t hash = kod_string_hash(str);
-  assert((uint32_t) str->hash == expected);
+  uint32_t hash = kod_string_hash(&str);
+  assert((uint32_t) str.hash == expected);
   assert(hash == expected);
-  kod_string_free(str, &mem);
+  kod_string_deinit(&str, &mem);
+}
+
+static inline void string_equal_test(void)
+{
+  KodString str1;
+  KodString str2;
+  KodString str3;
+  KodStatus status;
+  kod_status_ok(&status);
+  kod_string_init_from(&str1, "foo", &mem, &status);
+  assert(status.isOk);
+  kod_string_init_from(&str2, "foo", &mem, &status);
+  assert(status.isOk);
+  kod_string_init_from(&str3, "bar", &mem, &status);
+  assert(status.isOk);
+  assert(kod_string_equal(&str1, &str2));
+  assert(!kod_string_equal(&str1, &str3));
+  kod_string_deinit(&str1, &mem);
+  kod_string_deinit(&str2, &mem);
+  kod_string_deinit(&str3, &mem);
+}
+
+static inline void string_compare_test(void)
+{
+  KodString str1;
+  KodString str2;
+  KodString str3;
+  KodStatus status;
+  kod_status_ok(&status);
+  kod_string_init_from(&str1, "foo", &mem, &status);
+  assert(status.isOk);
+  kod_string_init_from(&str2, "foo", &mem, &status);
+  assert(status.isOk);
+  kod_string_init_from(&str3, "bar", &mem, &status);
+  assert(status.isOk);
+  assert(!kod_string_compare(&str1, &str2));
+  assert(kod_string_compare(&str1, &str3) > 0);
+  assert(kod_string_compare(&str3, &str1) < 0);
+  kod_string_deinit(&str1, &mem);
+  kod_string_deinit(&str2, &mem);
+  kod_string_deinit(&str3, &mem);
 }
 
 int main(void)
@@ -207,5 +251,7 @@ int main(void)
   string_new_from_utf8_test();
   string_release_test();
   string_hash_test();
+  string_equal_test();
+  string_compare_test();
   return EXIT_SUCCESS;
 }

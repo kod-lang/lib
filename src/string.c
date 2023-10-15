@@ -185,3 +185,19 @@ uint32_t kod_string_hash(KodString *str)
     str->hash = string_hash(str);
   return (uint32_t) str->hash;
 }
+
+bool kod_string_equal(KodString *str1, KodString *str2)
+{
+  if (str1->count != str2->count)
+    return false;
+  return !strncmp(str1->chars, str2->chars, str1->count);
+}
+
+int kod_string_compare(KodString *str1, KodString *str2)
+{
+  int minCount = (str1->count < str2->count) ? str1->count : str2->count;
+  int cmp = strncmp(str1->chars, str2->chars, minCount);
+  if (cmp)
+    return cmp;
+  return str1->count - str2->count;
+}
