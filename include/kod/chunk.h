@@ -27,7 +27,10 @@
 #define kod_instr_number(idx)                (kod_instr1(KOD_OP_NUMBER, (idx)))
 #define kod_instr_string(idx)                (kod_instr1(KOD_OP_STRING, (idx)))
 #define kod_instr_closure(r0, idx)           (kod_instr2(KOD_OP_CLOSURE, (r0), (idx)))
+#define kod_instr_reference(r0, idx)         (kod_instr2(KOD_OP_REFERENCE, (r0), (idx)))
 #define kod_instr_move(r0, r1)               (kod_instr2(KOD_OP_MOVE, (r0), (r1)))
+#define kod_instr_move_from_ref(r0, r1)      (kod_instr2(KOD_OP_MOVE_FROM_REF, (r0), (r1)))
+#define kod_instr_move_to_ref(r0, r1)        (kod_instr2(KOD_OP_MOVE_TO_REF, (r0), (r1)))
 #define kod_instr_get_nonlocal(r0, idx)      (kod_instr2(KOD_OP_GET_NONLOCAL, (r0), (idx)))
 #define kod_instr_set_nonlocal(r0, idx)      (kod_instr2(KOD_OP_SET_NONLOCAL, (r0), (idx)))
 #define kod_instr_add(r0, r1, r2)            (kod_instr3(KOD_OP_ADD, (r0), (r1), (r2)))
@@ -83,7 +86,10 @@ typedef enum
   KOD_OP_NUMBER,        // Number       <r0>  <idx>
   KOD_OP_STRING,        // String       <r0>  <idx>
   KOD_OP_CLOSURE,       // Closure      <r0>  <idx>
+  KOD_OP_REFERENCE,     // Reference    <r0>  <idx>
   KOD_OP_MOVE,          // Move         <r0>  <r1>
+  KOD_OP_MOVE_FROM_REF, // MoveFromRef  <r0>  <r1>
+  KOD_OP_MOVE_TO_REF,   // MoveToRef    <r0>  <r1>
   KOD_OP_GET_NONLOCAL,  // GetNonLocal  <r0>  <idx>
   KOD_OP_SET_NONLOCAL,  // SetNonLocal  <r0>  <idx>
   KOD_OP_ADD,           // Add          <r0>  <r1>  <r2>

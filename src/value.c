@@ -24,6 +24,9 @@ const char *kod_type_name(KodType type)
   case KOD_TYPE_STRING:
     name = "string";
     break;
+  case KOD_TYPE_REFERENCE:
+    name = "reference";
+    break;
   }
   return name;
 }
@@ -36,6 +39,7 @@ void kod_value_free(KodValue val, KodMemory *mem)
   case KOD_TYPE_BOOLEAN:
   case KOD_TYPE_NUMBER:
   case KOD_TYPE_RUNE:
+  case KOD_TYPE_REFERENCE:
     break;
   case KOD_TYPE_STRING:
     kod_string_free(kod_as_string(val), mem);
@@ -50,6 +54,7 @@ void kod_value_release(KodValue val, KodMemory *mem)
   case KOD_TYPE_BOOLEAN:
   case KOD_TYPE_NUMBER:
   case KOD_TYPE_RUNE:
+  case KOD_TYPE_REFERENCE:
     break;
   case KOD_TYPE_STRING:
     kod_string_release(kod_as_string(val), mem);
