@@ -14,6 +14,15 @@ add_executable(memory-test
   ../src/status.c
   memory_test.c)
 
+add_executable(stack-test
+  ../src/memory.c
+  ../src/stack.c
+  ../src/status.c
+  ../src/string.c
+  ../src/utils.c
+  ../src/value.c
+  stack_test.c)
+
 add_executable(status-test
   ../src/status.c
   status_test.c)
@@ -39,6 +48,7 @@ add_executable(value-test
 
 add_test(NAME chunk-test  COMMAND chunk-test)
 add_test(NAME memory-test COMMAND memory-test)
+add_test(NAME stack-test  COMMAND stack-test)
 add_test(NAME status-test COMMAND status-test)
 add_test(NAME string-test COMMAND string-test)
 add_test(NAME utils-test  COMMAND utils-test)

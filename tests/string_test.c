@@ -58,7 +58,7 @@ static inline void string_init_test(void)
   KodString str;
   kod_string_init(&str, &mem, &status);
   assert(status.isOk);
-  assert(!str.obj.refCount);
+  assert(!kod_ref_count(&str.obj));
   assert(str.capacity == KOD_STRING_MIN_CAPACITY);
   assert(!str.count);
   assert(!str.length);
@@ -109,6 +109,7 @@ static inline void string_init_from_ascii_test(void)
   assert(!strcmp(str.chars, "foo"));
   assert(str.count == 3);
   assert(str.length == 3);
+  kod_string_deinit(&str, &mem);
 }
 
 static inline void string_init_from_utf8_test(void)
@@ -121,6 +122,7 @@ static inline void string_init_from_utf8_test(void)
   assert(!strcmp(str.chars, "\xF0\x9F\x98\x81"));
   assert(str.count == 4);
   assert(str.length == 1);
+  kod_string_deinit(&str, &mem);
 }
 
 static inline void string_new_test(void)
@@ -129,7 +131,7 @@ static inline void string_new_test(void)
   kod_status_ok(&status);
   KodString *str = kod_string_new(&mem, &status);
   assert(status.isOk);
-  assert(!str->obj.refCount);
+  assert(!kod_ref_count(&str->obj));
   assert(str->capacity == KOD_STRING_MIN_CAPACITY);
   assert(!str->count);
   assert(!str->length);
