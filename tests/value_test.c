@@ -9,17 +9,17 @@
 
 static void *memory_alloc(size_t size, void *udata);
 static void *memory_realloc(void *ptr, size_t size, void *udata);
-static void memory_free(void *ptr, void *udata);
+static void memory_dealloc(void *ptr, void *udata);
 
 static KodMemory mem = {
   .alloc = memory_alloc,
   .realloc = memory_realloc,
-  .free = memory_free,
+  .dealloc = memory_dealloc,
   .udata = NULL
 };
 
 static inline void value_type_name_test(void);
-static inline void value_free_test(void);
+static inline void value_dealloc_test(void);
 static inline void value_release_test(void);
 static inline void value_equal_different_types_test(void);
 static inline void value_equal_null_test(void);
@@ -48,7 +48,7 @@ static void *memory_realloc(void *ptr, size_t size, void *udata)
   return realloc(ptr, size);
 }
 
-static void memory_free(void *ptr, void *udata)
+static void memory_dealloc(void *ptr, void *udata)
 {
   (void) udata;
   free(ptr);
@@ -64,18 +64,18 @@ static inline void value_type_name_test(void)
   assert(!strcmp(kod_type_name(KOD_TYPE_REFERENCE), "reference"));
 }
 
-static inline void value_free_test(void)
+static inline void value_dealloc_test(void)
 {
-  kod_value_free(KOD_NULL_VALUE, &mem);
-  kod_value_free(KOD_FALSE_VALUE, &mem);
-  kod_value_free(KOD_TRUE_VALUE, &mem);
-  kod_value_free(kod_number_value(1.23), &mem);
-  kod_value_free(kod_rune_value('a'), &mem);
+  kod_value_dealloc(KOD_NULL_VALUE, &mem);
+  kod_value_dealloc(KOD_FALSE_VALUE, &mem);
+  kod_value_dealloc(KOD_TRUE_VALUE, &mem);
+  kod_value_dealloc(kod_number_value(1.23), &mem);
+  kod_value_dealloc(kod_rune_value('a'), &mem);
   KodStatus status;
   kod_status_ok(&status);
   KodString *str = kod_string_new_from("foo", &mem, &status);
   assert(status.isOk);
-  kod_value_free(kod_string_value(str), &mem);
+  kod_value_dealloc(kod_string_value(str), &mem);
 }
 
 static inline void value_release_test(void)
@@ -277,7 +277,7 @@ static inline void value_compare_reference_test(void)
 int main(void)
 {
   value_type_name_test();
-  value_free_test();
+  value_dealloc_test();
   value_release_test();
   value_equal_different_types_test();
   value_equal_null_test();

@@ -35,7 +35,7 @@
 
 #define kod_vector_deinit(v, m) \
   do { \
-    kod_memory_free((m), (v)->elements); \
+    kod_memory_dealloc((m), (v)->elements); \
   } while (0)
 
 #define kod_vector_get(v, i) ((v)->elements[(i)])

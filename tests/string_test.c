@@ -9,12 +9,12 @@
 
 static void *memory_alloc(size_t size, void *udata);
 static void *memory_realloc(void *ptr, size_t size, void *udata);
-static void memory_free(void *ptr, void *udata);
+static void memory_dealloc(void *ptr, void *udata);
 
 static KodMemory mem = {
   .alloc = memory_alloc,
   .realloc = memory_realloc,
-  .free = memory_free,
+  .dealloc = memory_dealloc,
   .udata = NULL
 };
 
@@ -45,7 +45,7 @@ static void *memory_realloc(void *ptr, size_t size, void *udata)
   return realloc(ptr, size);
 }
 
-static void memory_free(void *ptr, void *udata)
+static void memory_dealloc(void *ptr, void *udata)
 {
   (void) udata;
   free(ptr);
@@ -135,7 +135,7 @@ static inline void string_new_test(void)
   assert(!str->length);
   assert(str->hash == -1);
   assert(str->chars);
-  kod_string_free(str, &mem);
+  kod_string_dealloc(str, &mem);
 }
 
 static inline void string_new_with_capacity_test(void)
@@ -145,7 +145,7 @@ static inline void string_new_with_capacity_test(void)
   KodString *str = kod_string_new_with_capacity(8, &mem, &status);
   assert(status.isOk);
   assert(str->capacity == 16);
-  kod_string_free(str, &mem);
+  kod_string_dealloc(str, &mem);
 }
 
 static inline void string_new_from_ascii_test(void)
@@ -157,7 +157,7 @@ static inline void string_new_from_ascii_test(void)
   assert(!strcmp(str->chars, "foo"));
   assert(str->count == 3);
   assert(str->length == 3);
-  kod_string_free(str, &mem);
+  kod_string_dealloc(str, &mem);
 }
 
 static inline void string_new_from_utf8_test(void)
@@ -169,7 +169,7 @@ static inline void string_new_from_utf8_test(void)
   assert(!strcmp(str->chars, "\xF0\x9F\x98\x81"));
   assert(str->count == 4);
   assert(str->length == 1);
-  kod_string_free(str, &mem);
+  kod_string_dealloc(str, &mem);
 }
 
 static inline void string_release_test(void)

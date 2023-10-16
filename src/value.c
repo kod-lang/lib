@@ -51,7 +51,7 @@ const char *kod_type_name(KodType type)
   return name;
 }
 
-void kod_value_free(KodValue val, KodMemory *mem)
+void kod_value_dealloc(KodValue val, KodMemory *mem)
 {
   switch (kod_type(val))
   {
@@ -62,7 +62,7 @@ void kod_value_free(KodValue val, KodMemory *mem)
   case KOD_TYPE_REFERENCE:
     break;
   case KOD_TYPE_STRING:
-    kod_string_free(kod_as_string(val), mem);
+    kod_string_dealloc(kod_as_string(val), mem);
     break;
   }
 }

@@ -119,7 +119,7 @@ void kod_string_init_from(KodString *str, const char *chars, KodMemory *mem, Kod
 
 void kod_string_deinit(KodString *str, KodMemory *mem)
 {
-  kod_memory_free(mem, str->chars);
+  kod_memory_dealloc(mem, str->chars);
 }
 
 KodString *kod_string_new(KodMemory *mem, KodStatus *status)
@@ -130,7 +130,7 @@ KodString *kod_string_new(KodMemory *mem, KodStatus *status)
   kod_string_init(str, mem, status);
   if (!status->isOk)
   {
-    kod_memory_free(mem, str);
+    kod_memory_dealloc(mem, str);
     return NULL;
   }
   return str;
@@ -144,7 +144,7 @@ KodString *kod_string_new_with_capacity(int capacity, KodMemory *mem, KodStatus 
   kod_string_init_with_capacity(str, capacity, mem, status);
   if (!status->isOk)
   {
-    kod_memory_free(mem, str);
+    kod_memory_dealloc(mem, str);
     return NULL;
   }
   return str;
@@ -158,16 +158,16 @@ KodString *kod_string_new_from(const char *chars, KodMemory *mem, KodStatus *sta
   kod_string_init_from(str, chars, mem, status);
   if (!status->isOk)
   {
-    kod_memory_free(mem, str);
+    kod_memory_dealloc(mem, str);
     return NULL;
   }
   return str;
 }
 
-void kod_string_free(KodString *str, KodMemory *mem)
+void kod_string_dealloc(KodString *str, KodMemory *mem)
 {
   kod_string_deinit(str, mem);
-  kod_memory_free(mem, str);
+  kod_memory_dealloc(mem, str);
 }
 
 void kod_string_release(KodString *str, KodMemory *mem)
@@ -176,7 +176,7 @@ void kod_string_release(KodString *str, KodMemory *mem)
   kod_dec_ref(obj);
   if (kod_ref_count(obj))
     return;
-  kod_string_free(str, mem);
+  kod_string_dealloc(str, mem);
 }
 
 uint32_t kod_string_hash(KodString *str)

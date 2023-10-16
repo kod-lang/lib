@@ -8,12 +8,12 @@
 
 static void *memory_alloc(size_t size, void *udata);
 static void *memory_realloc(void *ptr, size_t size, void *udata);
-static void memory_free(void *ptr, void *udata);
+static void memory_dealloc(void *ptr, void *udata);
 
 static KodMemory mem = {
   .alloc = memory_alloc,
   .realloc = memory_realloc,
-  .free = memory_free,
+  .dealloc = memory_dealloc,
   .udata = NULL
 };
 
@@ -34,7 +34,7 @@ static void *memory_realloc(void *ptr, size_t size, void *udata)
   return realloc(ptr, size);
 }
 
-static void memory_free(void *ptr, void *udata)
+static void memory_dealloc(void *ptr, void *udata)
 {
   (void) udata;
   free(ptr);

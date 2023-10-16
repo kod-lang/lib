@@ -14,11 +14,11 @@
   } while (0)
 
 void kod_memory_init(KodMemory *mem, KodMemoryAllocFn alloc, KodMemoryReallocFn realloc,
-  KodMemoryFreeFn free, void *udata)
+  KodMemoryDeallocFn dealloc, void *udata)
 {
   mem->alloc = alloc;
   mem->realloc = realloc;
-  mem->free = free;
+  mem->dealloc = dealloc;
   mem->udata = udata;
 }
 
@@ -36,7 +36,7 @@ void *kod_memory_realloc(KodMemory *mem, void *ptr, size_t size, KodStatus *stat
   return newPtr;
 }
 
-void kod_memory_free(KodMemory *mem, void *ptr)
+void kod_memory_dealloc(KodMemory *mem, void *ptr)
 {
-  mem->free(ptr, mem->udata);
+  mem->dealloc(ptr, mem->udata);
 }
