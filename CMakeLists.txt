@@ -25,6 +25,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
 set(SOURCES
   src/chunk.c
   src/memory.c
+  src/range.c
   src/stack.c
   src/status.c
   src/string.c

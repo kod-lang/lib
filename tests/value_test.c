@@ -61,6 +61,7 @@ static inline void value_type_name_test(void)
   assert(!strcmp(kod_type_name(KOD_TYPE_NUMBER), "number"));
   assert(!strcmp(kod_type_name(KOD_TYPE_RUNE), "rune"));
   assert(!strcmp(kod_type_name(KOD_TYPE_STRING), "string"));
+  assert(!strcmp(kod_type_name(KOD_TYPE_RANGE), "range"));
   assert(!strcmp(kod_type_name(KOD_TYPE_REFERENCE), "reference"));
 }
 

@@ -4,6 +4,7 @@
 
 #include "kod/value.h"
 #include <math.h>
+#include "kod/range.h"
 #include "kod/string.h"
 
 #define EPSILON 1e-9
@@ -44,6 +45,9 @@ const char *kod_type_name(KodType type)
   case KOD_TYPE_STRING:
     name = "string";
     break;
+  case KOD_TYPE_RANGE:
+    name = "range";
+    break;
   case KOD_TYPE_REFERENCE:
     name = "reference";
     break;
@@ -64,6 +68,9 @@ void kod_value_dealloc(KodValue val, KodMemory *mem)
   case KOD_TYPE_STRING:
     kod_string_dealloc(kod_as_string(val), mem);
     break;
+  case KOD_TYPE_RANGE:
+    kod_range_dealloc(kod_as_range(val), mem);
+    break;
   }
 }
 
@@ -79,6 +86,9 @@ void kod_value_release(KodValue val, KodMemory *mem)
     break;
   case KOD_TYPE_STRING:
     kod_string_release(kod_as_string(val), mem);
+    break;
+  case KOD_TYPE_RANGE:
+    kod_range_release(kod_as_range(val), mem);
     break;
   }
 }
@@ -103,6 +113,9 @@ bool kod_value_equal(KodValue val1, KodValue val2)
     break;
   case KOD_TYPE_STRING:
     isEqual = kod_string_equal(kod_as_string(val1), kod_as_string(val2));
+    break;
+  case KOD_TYPE_RANGE:
+    isEqual = kod_range_equal(kod_as_range(val1), kod_as_range(val2));
     break;
   case KOD_TYPE_REFERENCE:
     isEqual = kod_as_reference(val1) == kod_as_reference(val2);
@@ -138,6 +151,9 @@ int kod_value_compare(KodValue val1, KodValue val2, KodStatus *status)
     break;
   case KOD_TYPE_REFERENCE:
     cmp = reference_compare(kod_as_reference(val1), kod_as_reference(val2));
+    break;
+  case KOD_TYPE_RANGE:
+    kod_status_error(status, "cannot compare %s values", kod_type_name(kod_type(val1)));
     break;
   }
   return cmp;

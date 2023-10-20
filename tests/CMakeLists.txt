@@ -14,8 +14,15 @@ add_executable(memory-test
   ../src/status.c
   memory_test.c)
 
+add_executable(range-test
+  ../src/memory.c
+  ../src/range.c
+  ../src/status.c
+  range_test.c)
+
 add_executable(stack-test
   ../src/memory.c
+  ../src/range.c
   ../src/stack.c
   ../src/status.c
   ../src/string.c
@@ -40,6 +47,7 @@ add_executable(utils-test
 
 add_executable(value-test
   ../src/memory.c
+  ../src/range.c
   ../src/status.c
   ../src/string.c
   ../src/utils.c
@@ -48,6 +56,7 @@ add_executable(value-test
 
 add_test(NAME chunk-test  COMMAND chunk-test)
 add_test(NAME memory-test COMMAND memory-test)
+add_test(NAME range-test  COMMAND range-test)
 add_test(NAME stack-test  COMMAND stack-test)
 add_test(NAME status-test COMMAND status-test)
 add_test(NAME string-test COMMAND string-test)
