@@ -132,6 +132,7 @@ static inline void string_new_with_capacity_test(void)
   kod_status_ok(&status);
   KodString *str = kod_string_new_with_capacity(8, &mem, &status);
   assert(status.isOk);
+  assert(str);
   assert(str->capacity == 16);
   kod_string_dealloc(str, &mem);
 }
@@ -142,6 +143,7 @@ static inline void string_new_test(void)
   kod_status_ok(&status);
   KodString *str = kod_string_new(&mem, &status);
   assert(status.isOk);
+  assert(str);
   assert(!kod_ref_count(&str->obj));
   assert(str->capacity == KOD_STRING_MIN_CAPACITY);
   assert(!str->count);
@@ -157,6 +159,7 @@ static inline void string_new_from_ascii_test(void)
   kod_status_ok(&status);
   KodString *str = kod_string_new_from("foo", &mem, &status);
   assert(status.isOk);
+  assert(str);
   assert(str->count == 3);
   assert(!strcmp(str->chars, "foo"));
   assert(str->length == 3);
@@ -169,6 +172,7 @@ static inline void string_new_from_utf8_test(void)
   kod_status_ok(&status);
   KodString *str = kod_string_new_from("\xF0\x9F\x98\x81", &mem, &status);
   assert(status.isOk);
+  assert(str);
   assert(str->count == 4);
   assert(!strcmp(str->chars, "\xF0\x9F\x98\x81"));
   assert(str->length == 1);

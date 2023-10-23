@@ -59,22 +59,9 @@
 #define kod_instr_tail_call(r0, r1, n)       (kod_instr3(KOD_OP_TAIL_CALL, (r0), (r1), (n)))
 #define KOD_INSTR_RETURN                     (kod_instr0(KOD_OP_RETURN))
 
-#define kod_chunk_emit(c, instr, m, s) \
+#define kod_chunk_inplace_emit(c, instr, m, s) \
   do { \
     kod_vector_inplace_add(&(c)->instructions, (instr), (m), (s)); \
-  } while (0)
-
-#define kod_chunk_add_number(c, num, m, s) \
-  do { \
-    kod_vector_inplace_add(&(c)->numbers, (num), (m), (s)); \
-  } while (0)
-
-#define kod_chunk_add_string(c, str, m, s) \
-  do { \
-    kod_vector_inplace_add(&(c)->strings, (str), (m), (s)); \
-    if (!(s)->isOk) \
-      break; \
-    kod_inc_ref(&(str)->obj); \
   } while (0)
 
 typedef enum
@@ -128,5 +115,7 @@ typedef struct
 
 KOD_API void kod_chunk_init(KodChunk *chunk, KodMemory *mem, KodStatus *status);
 KOD_API void kod_chunk_deinit(KodChunk *chunk, KodMemory *mem);
+KOD_API uint8_t kod_chunk_inplace_add_number(KodChunk *chunk, double num, KodMemory *mem, KodStatus *status);
+KOD_API uint8_t kod_chunk_inplace_add_string(KodChunk *chunk, KodString *str, KodMemory *mem, KodStatus *status);
 
 #endif // KOD_CHUNK_H

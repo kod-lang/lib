@@ -54,6 +54,7 @@ static inline void range_new_test(void)
   kod_status_ok(&status);
   KodRange *range = kod_range_new(1, 3, &mem, &status);
   assert(status.isOk);
+  assert(range);
   assert(range->from == (double) 1);
   assert(range->to == (double) 3);
   kod_range_dealloc(range, &mem);

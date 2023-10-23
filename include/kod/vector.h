@@ -58,6 +58,10 @@
 #define kod_vector_inplace_add(v, e, m, s) \
   do { \
     if ((v)->count == (v)->capacity) { \
+      if ((v)->capacity == KOD_VECTOR_MAX_CAPACITY) { \
+        kod_status_error((s), "vector capacity exceeds maximum"); \
+        break; \
+      } \
       int capacity = (v)->capacity << 1; \
       size_t size = sizeof(*(v)->elements) * capacity; \
       void *elements = kod_memory_realloc((m), (v)->elements, size, (s)); \
