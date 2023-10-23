@@ -4,7 +4,7 @@
 
 #include "kod/string.h"
 #include <string.h>
-#include "utils.h"
+#include "kod/utils.h"
 
 static inline void string_init_with_capacity(KodString *str, int capacity, KodMemory *mem, KodStatus *status);
 static inline void string_check(const char *chars, int *count, int *length, KodStatus *status);
@@ -20,9 +20,9 @@ static inline void string_init_with_capacity(KodString *str, int capacity, KodMe
   kod_object_init(&str->obj);
   str->capacity = capacity;
   str->count = 0;
+  str->chars = chars;
   str->length = 0;
   str->hash = -1;
-  str->chars = chars;
 }
 
 static inline void string_check(const char *chars, int *count, int *length, KodStatus *status)
@@ -83,11 +83,6 @@ static inline uint32_t string_hash(KodString *str)
   return hash;
 }
 
-void kod_string_init(KodString *str, KodMemory *mem, KodStatus *status)
-{
-  string_init_with_capacity(str, KOD_STRING_MIN_CAPACITY, mem, status);
-}
-
 void kod_string_init_with_capacity(KodString *str, int capacity, KodMemory *mem, KodStatus *status)
 {
   int realCapacity = capacity + 1;
@@ -97,8 +92,13 @@ void kod_string_init_with_capacity(KodString *str, int capacity, KodMemory *mem,
     return;
   }
   realCapacity = (realCapacity < KOD_STRING_MIN_CAPACITY) ? 
-    KOD_STRING_MIN_CAPACITY : power_of_two_ceil(realCapacity);
+    KOD_STRING_MIN_CAPACITY : kod_power_of_two_ceil(realCapacity);
   string_init_with_capacity(str, realCapacity, mem, status);
+}
+
+void kod_string_init(KodString *str, KodMemory *mem, KodStatus *status)
+{
+  string_init_with_capacity(str, KOD_STRING_MIN_CAPACITY, mem, status);
 }
 
 void kod_string_init_from(KodString *str, const char *chars, KodMemory *mem, KodStatus *status)
@@ -112,28 +112,14 @@ void kod_string_init_from(KodString *str, const char *chars, KodMemory *mem, Kod
   if (!status->isOk)
     return;
   str->count = count;
-  str->length = length;
   memcpy(str->chars, chars, count);
   str->chars[count] = '\0';
+  str->length = length;
 }
 
 void kod_string_deinit(KodString *str, KodMemory *mem)
 {
   kod_memory_dealloc(mem, str->chars);
-}
-
-KodString *kod_string_new(KodMemory *mem, KodStatus *status)
-{
-  KodString *str = kod_memory_alloc(mem, sizeof(*str), status);
-  if (!status->isOk)
-    return NULL;
-  kod_string_init(str, mem, status);
-  if (!status->isOk)
-  {
-    kod_memory_dealloc(mem, str);
-    return NULL;
-  }
-  return str;
 }
 
 KodString *kod_string_new_with_capacity(int capacity, KodMemory *mem, KodStatus *status)
@@ -142,6 +128,20 @@ KodString *kod_string_new_with_capacity(int capacity, KodMemory *mem, KodStatus 
   if (!status->isOk)
     return NULL;
   kod_string_init_with_capacity(str, capacity, mem, status);
+  if (!status->isOk)
+  {
+    kod_memory_dealloc(mem, str);
+    return NULL;
+  }
+  return str;
+}
+
+KodString *kod_string_new(KodMemory *mem, KodStatus *status)
+{
+  KodString *str = kod_memory_alloc(mem, sizeof(*str), status);
+  if (!status->isOk)
+    return NULL;
+  kod_string_init(str, mem, status);
   if (!status->isOk)
   {
     kod_memory_dealloc(mem, str);

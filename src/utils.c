@@ -2,9 +2,9 @@
 // utils.c
 //
 
-#include "utils.h"
+#include "kod/utils.h"
 
-int power_of_two_ceil(int n)
+int kod_power_of_two_ceil(int n)
 {
   --n;
   n |= n >> 1;

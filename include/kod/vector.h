@@ -6,6 +6,7 @@
 #define KOD_VECTOR_H
 
 #include "memory.h"
+#include "utils.h"
 
 #define KOD_VECTOR_MIN_CAPACITY (1 << 3)
 #define KOD_VECTOR_MAX_CAPACITY (1 << 30)
@@ -19,18 +20,32 @@
 
 #define kod_vector_init_with_capacity(v, c, m, s) \
   do { \
-    size_t size = sizeof(*(v)->elements) * (c); \
+    int realCapacity = (c); \
+    if (realCapacity > KOD_VECTOR_MAX_CAPACITY) { \
+      kod_status_error((s), "vector capacity exceeds maximum"); \
+      break; \
+    } \
+    realCapacity = (realCapacity < KOD_VECTOR_MIN_CAPACITY) ? \
+      KOD_VECTOR_MIN_CAPACITY : kod_power_of_two_ceil(realCapacity); \
+    size_t size = sizeof(*(v)->elements) * realCapacity; \
     void *elements = kod_memory_alloc((m), size, (s)); \
     if (!(s)->isOk) \
       break; \
-    (v)->capacity = (c); \
+    (v)->capacity = realCapacity; \
     (v)->count = 0; \
     (v)->elements = elements; \
   } while (0)
 
 #define kod_vector_init(v, m, s) \
   do { \
-    kod_vector_init_with_capacity((v), KOD_VECTOR_MIN_CAPACITY, (m), (s)); \
+    int capacity = KOD_VECTOR_MIN_CAPACITY; \
+    size_t size = sizeof(*(v)->elements) * capacity; \
+    void *elements = kod_memory_alloc((m), size, (s)); \
+    if (!(s)->isOk) \
+      break; \
+    (v)->capacity = capacity; \
+    (v)->count = 0; \
+    (v)->elements = elements; \
   } while (0)
 
 #define kod_vector_deinit(v, m) \
@@ -67,7 +82,7 @@
       (v)->elements[j] = (v)->elements[j + 1]; \
   } while (0)
 
-#define kod_vector_inplace_clean(v) \
+#define kod_vector_inplace_clear(v) \
   do { \
     (v)->count = 0; \
   } while (0)
