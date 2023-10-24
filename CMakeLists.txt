@@ -27,7 +27,6 @@ set(SOURCES
   src/function.c
   src/memory.c
   src/range.c
-  src/stack.c
   src/status.c
   src/string.c
   src/utils.c

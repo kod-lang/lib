@@ -46,7 +46,7 @@ static inline void stack_init_test(void)
 {
   KodStatus status;
   kod_status_ok(&status);
-  KodStack stack;
+  KodStack(KodValue) stack = { 0 };
   kod_stack_init(&stack, KOD_STACK_DEFAULT_SIZE, &mem, &status);
   assert(status.isOk);
   assert(stack.size == KOD_STACK_DEFAULT_SIZE);
@@ -60,7 +60,7 @@ static inline void stack_inplace_push_test(void)
 {
   KodStatus status;
   kod_status_ok(&status);
-  KodStack stack;
+  KodStack(KodValue) stack = { 0 };
   kod_stack_init(&stack, KOD_STACK_DEFAULT_SIZE, &mem, &status);
   assert(status.isOk);
   kod_stack_inplace_push(&stack, kod_number_value(1.23), &status);
@@ -81,7 +81,7 @@ static inline void stack_inplace_push_value_test(void)
 {
   KodStatus status;
   kod_status_ok(&status);
-  KodStack stack;
+  KodStack(KodValue) stack = { 0 };
   kod_stack_init(&stack, KOD_STACK_DEFAULT_SIZE, &mem, &status);
   assert(status.isOk);
   kod_stack_inplace_push_value(&stack, kod_number_value(1.23), &status);
@@ -95,7 +95,7 @@ static inline void stack_inplace_push_object_test(void)
 {
   KodStatus status;
   kod_status_ok(&status);
-  KodStack stack;
+  KodStack(KodValue) stack = { 0 };
   kod_stack_init(&stack, KOD_STACK_DEFAULT_SIZE, &mem, &status);
   assert(status.isOk);
   KodString *str = kod_string_new_from("foo", &mem, &status);
@@ -112,7 +112,7 @@ static inline void stack_inplace_pop_test(void)
 {
   KodStatus status;
   kod_status_ok(&status);
-  KodStack stack;
+  KodStack(KodValue) stack = { 0 };
   kod_stack_init(&stack, KOD_STACK_DEFAULT_SIZE, &mem, &status);
   assert(status.isOk);
   KodString *str = kod_string_new_from("foo", &mem, &status);

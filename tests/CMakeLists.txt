@@ -32,7 +32,6 @@ add_executable(range-test
 add_executable(stack-test
   ../src/memory.c
   ../src/range.c
-  ../src/stack.c
   ../src/status.c
   ../src/string.c
   ../src/utils.c
