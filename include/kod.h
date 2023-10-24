@@ -7,6 +7,7 @@
 
 #include "kod/chunk.h"
 #include "kod/common.h"
+#include "kod/function.h"
 #include "kod/memory.h"
 #include "kod/range.h"
 #include "kod/stack.h"
