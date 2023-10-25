@@ -5,7 +5,8 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include "kod/string.h"
+#include "kod/closure.h"
+#include "kod/range.h"
 
 static void *memory_alloc(size_t size, void *udata);
 static void *memory_realloc(void *ptr, size_t size, void *udata);
@@ -27,6 +28,8 @@ static inline void value_equal_boolean_test(void);
 static inline void value_equal_number_test(void);
 static inline void value_equal_rune_test(void);
 static inline void value_equal_string_test(void);
+static inline void value_equal_range_test(void);
+static inline void value_equal_closure_test(void);
 static inline void value_equal_reference_test(void);
 static inline void value_compare_different_types_test(void);
 static inline void value_compare_null_test(void);
@@ -34,6 +37,8 @@ static inline void value_compare_boolean_test(void);
 static inline void value_compare_number_test(void);
 static inline void value_compare_rune_test(void);
 static inline void value_compare_string_test(void);
+static inline void value_compare_range_test(void);
+static inline void value_compare_closure_test(void);
 static inline void value_compare_reference_test(void);
 
 static void *memory_alloc(size_t size, void *udata)
@@ -62,6 +67,7 @@ static inline void value_type_name_test(void)
   assert(!strcmp(kod_type_name(KOD_TYPE_RUNE), "rune"));
   assert(!strcmp(kod_type_name(KOD_TYPE_STRING), "string"));
   assert(!strcmp(kod_type_name(KOD_TYPE_RANGE), "range"));
+  assert(!strcmp(kod_type_name(KOD_TYPE_CLOSURE), "closure"));
   assert(!strcmp(kod_type_name(KOD_TYPE_REFERENCE), "reference"));
 }
 
@@ -147,12 +153,45 @@ static inline void value_equal_string_test(void)
   assert(status.isOk);
   kod_string_init_from(&str3, "bar", &mem, &status);
   assert(status.isOk);
-  assert(kod_value_equal(kod_string_value(&str1), kod_string_value(&str1)));
   assert(kod_value_equal(kod_string_value(&str1), kod_string_value(&str2)));
   assert(!kod_value_equal(kod_string_value(&str1), kod_string_value(&str3)));
   kod_string_deinit(&str1, &mem);
   kod_string_deinit(&str2, &mem);
   kod_string_deinit(&str3, &mem);
+}
+
+static inline void value_equal_range_test(void)
+{
+  KodRange range1;
+  KodRange range2;
+  KodRange range3;
+  KodStatus status;
+  kod_status_ok(&status);
+  kod_range_init(&range1, 1, 2);
+  kod_range_init(&range2, 1, 2);
+  kod_range_init(&range3, 2, 3);
+  assert(kod_value_equal(kod_range_value(&range1), kod_range_value(&range2)));
+  assert(!kod_value_equal(kod_range_value(&range1), kod_range_value(&range3)));
+}
+
+static inline void value_equal_closure_test(void)
+{
+  KodStatus status;
+  kod_status_ok(&status);
+  KodString *name = kod_string_new_from("foo", &mem, &status);
+  assert(status.isOk);
+  KodString *file = kod_string_new_from("bar", &mem, &status);
+  assert(status.isOk);
+  KodFunction *fn = kod_function_new(1, name, file, &mem, &status);
+  assert(status.isOk);
+  KodClosure *cl1 = kod_closure_new(fn, &mem, &status);
+  assert(status.isOk);
+  KodClosure *cl2 = kod_closure_new(fn, &mem, &status);
+  assert(status.isOk);
+  assert(kod_value_equal(kod_closure_value(cl1), kod_closure_value(cl1)));
+  assert(!kod_value_equal(kod_closure_value(cl1), kod_closure_value(cl2)));
+  kod_closure_dealloc(cl1, &mem);
+  kod_closure_dealloc(cl2, &mem);
 }
 
 static inline void value_equal_reference_test(void)
@@ -260,19 +299,49 @@ static inline void value_compare_string_test(void)
   kod_string_deinit(&str3, &mem);
 }
 
+static inline void value_compare_range_test(void)
+{
+  KodRange range1;
+  KodRange range2;
+  KodStatus status;
+  kod_status_ok(&status);
+  kod_range_init(&range1, 1, 2);
+  kod_range_init(&range2, 2, 3);
+  (void) kod_value_compare(kod_range_value(&range1), kod_range_value(&range2), &status);
+  assert(!status.isOk);
+  assert(!strcmp(status.error, "cannot compare range values"));
+}
+
+static inline void value_compare_closure_test(void)
+{
+  KodStatus status;
+  kod_status_ok(&status);
+  KodString *name = kod_string_new_from("foo", &mem, &status);
+  assert(status.isOk);
+  KodString *file = kod_string_new_from("bar", &mem, &status);
+  assert(status.isOk);
+  KodFunction *fn = kod_function_new(1, name, file, &mem, &status);
+  assert(status.isOk);
+  KodClosure *cl1 = kod_closure_new(fn, &mem, &status);
+  assert(status.isOk);
+  KodClosure *cl2 = kod_closure_new(fn, &mem, &status);
+  assert(status.isOk);
+  (void) kod_value_compare(kod_closure_value(cl1), kod_closure_value(cl2), &status);
+  assert(!status.isOk);
+  assert(!strcmp(status.error, "cannot compare closure values"));
+  kod_closure_dealloc(cl1, &mem);
+  kod_closure_dealloc(cl2, &mem);
+}
+
 static inline void value_compare_reference_test(void)
 {
   KodValue val1;
   KodValue val2;
   KodStatus status;
   kod_status_ok(&status);
-  int cmp;
-  cmp = kod_value_compare(kod_reference_value(&val1), kod_reference_value(&val1), &status);
-  assert(status.isOk);
-  assert(!cmp);
-  cmp = kod_value_compare(kod_reference_value(&val1), kod_reference_value(&val2), &status);
-  assert(status.isOk);
-  assert(cmp);
+  (void) kod_value_compare(kod_reference_value(&val1), kod_reference_value(&val2), &status);
+  assert(!status.isOk);
+  assert(!strcmp(status.error, "cannot compare reference values"));
 }
 
 int main(void)
@@ -286,6 +355,8 @@ int main(void)
   value_equal_number_test();
   value_equal_rune_test();
   value_equal_string_test();
+  value_equal_range_test();
+  value_equal_closure_test();
   value_equal_reference_test();
   value_compare_different_types_test();
   value_compare_null_test();
@@ -293,6 +364,8 @@ int main(void)
   value_compare_number_test();
   value_compare_rune_test();
   value_compare_string_test();
+  value_compare_range_test();
+  value_compare_closure_test();
   value_compare_reference_test();
   return EXIT_SUCCESS;
 }

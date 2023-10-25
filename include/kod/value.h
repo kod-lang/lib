@@ -19,6 +19,7 @@
 #define kod_rune_value(r)      ((KodValue) { .type = KOD_TYPE_RUNE, .flags = KOD_FLAG_NONE, .asRune = (r) })
 #define kod_string_value(s)    ((KodValue) { .type = KOD_TYPE_STRING, .flags = KOD_FLAG_OBJECT, .asPointer = (s) })
 #define kod_range_value(r)     ((KodValue) { .type = KOD_TYPE_RANGE, .flags = KOD_FLAG_OBJECT, .asPointer = (r) })
+#define kod_closure_value(c)   ((KodValue) { .type = KOD_TYPE_CLOSURE, .flags = KOD_FLAG_OBJECT, .asPointer = (c) })
 #define kod_reference_value(r) ((KodValue) { .type = KOD_TYPE_REFERENCE, .flags = KOD_FLAG_NONE, .asReference = (r) })
 
 #define kod_type(v)  ((v).type)
@@ -30,6 +31,7 @@
 #define kod_is_rune(v)      (kod_type(v) == KOD_TYPE_RUNE)
 #define kod_is_string(v)    (kod_type(v) == KOD_TYPE_STRING)
 #define kod_is_range(v)     (kod_type(v) == KOD_TYPE_RANGE)
+#define kod_is_closure(v)   (kod_type(v) == KOD_TYPE_CLOSURE)
 #define kod_is_reference(v) (kod_type(v) == KOD_TYPE_REFERENCE)
 #define kod_is_falsy(v)     (kod_flags(v) & KOD_FLAG_FALSY)
 #define kod_is_object(v)    (kod_flags(v) & KOD_FLAG_OBJECT)
@@ -39,6 +41,7 @@
 #define kod_as_rune(v)    ((v).asRune)
 #define kod_as_string(v)  ((KodString *) (v).asPointer)
 #define kod_as_range(v)   ((KodRange *) (v).asPointer)
+#define kod_as_closure(v) ((KodClosure *) (v).asPointer)
 #define kod_as_object(v)  ((KodObject *) (v).asPointer)
 #define kod_as_reference(v) ((v).asReference)
 
@@ -74,6 +77,7 @@ typedef enum
   KOD_TYPE_RUNE,
   KOD_TYPE_STRING,
   KOD_TYPE_RANGE,
+  KOD_TYPE_CLOSURE,
   KOD_TYPE_REFERENCE
 } KodType;
 

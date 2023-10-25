@@ -9,6 +9,18 @@ add_executable(chunk-test
   ../src/utils.c
   chunk_test.c)
 
+add_executable(closure-test
+  ../src/chunk.c
+  ../src/closure.c
+  ../src/function.c
+  ../src/memory.c
+  ../src/range.c
+  ../src/status.c
+  ../src/string.c
+  ../src/utils.c
+  ../src/value.c
+  closure_test.c)
+
 add_executable(function-test
   ../src/chunk.c
   ../src/function.c
@@ -30,6 +42,9 @@ add_executable(range-test
   range_test.c)
 
 add_executable(stack-test
+  ../src/chunk.c
+  ../src/closure.c
+  ../src/function.c
   ../src/memory.c
   ../src/range.c
   ../src/status.c
@@ -54,6 +69,9 @@ add_executable(utils-test
   utils_test.c)
 
 add_executable(value-test
+  ../src/chunk.c
+  ../src/closure.c
+  ../src/function.c
   ../src/memory.c
   ../src/range.c
   ../src/status.c
@@ -69,6 +87,7 @@ add_executable(vector-test
   vector_test.c)
 
 add_test(NAME chunk-test    COMMAND chunk-test)
+add_test(NAME closure-test  COMMAND closure-test)
 add_test(NAME function-test COMMAND function-test)
 add_test(NAME memory-test   COMMAND memory-test)
 add_test(NAME range-test    COMMAND range-test)

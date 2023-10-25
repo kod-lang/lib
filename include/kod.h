@@ -6,6 +6,7 @@
 #define KOD_H
 
 #include "kod/chunk.h"
+#include "kod/closure.h"
 #include "kod/common.h"
 #include "kod/function.h"
 #include "kod/memory.h"
