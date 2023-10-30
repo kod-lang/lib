@@ -33,16 +33,20 @@
 #define kod_instr_move_to_ref(r0, r1)        (kod_instr2(KOD_OP_MOVE_TO_REF, (r0), (r1)))
 #define kod_instr_get_nonlocal(r0, idx)      (kod_instr2(KOD_OP_GET_NONLOCAL, (r0), (idx)))
 #define kod_instr_set_nonlocal(r0, idx)      (kod_instr2(KOD_OP_SET_NONLOCAL, (r0), (idx)))
+#define kod_instr_range(r0, r1, r2)          (kod_instr3(KOD_OP_RANGE, (r0), (r1), (r2)))
 #define kod_instr_add(r0, r1, r2)            (kod_instr3(KOD_OP_ADD, (r0), (r1), (r2)))
 #define kod_instr_add_int(r0, r1, imm)       (kod_instr3(KOD_OP_ADD_INT, (r0), (r1), (imm)))
 #define kod_instr_subtract(r0, r1, r2)       (kod_instr3(KOD_OP_SUBTRACT, (r0), (r1), (r2)))
 #define kod_instr_subtract_int(r0, r1, imm)  (kod_instr3(KOD_OP_SUBTRACT_INT, (r0), (r1), (imm)))
+#define kod_instr_int_subtract(r0, r1, imm)  (kod_instr3(KOD_OP_INT_SUBTRACT, (r0), (r1), (imm)))
 #define kod_instr_multiply(r0, r1, r2)       (kod_instr3(KOD_OP_MULTIPLY, (r0), (r1), (r2)))
 #define kod_instr_multiply_int(r0, r1, imm)  (kod_instr3(KOD_OP_MULTIPLY_INT, (r0), (r1), (imm)))
 #define kod_instr_divide(r0, r1, r2)         (kod_instr3(KOD_OP_DIVIDE, (r0), (r1), (r2)))
 #define kod_instr_divide_int(r0, r1, imm)    (kod_instr3(KOD_OP_DIVIDE_INT, (r0), (r1), (imm)))
+#define kod_instr_int_divide(r0, r1, imm)    (kod_instr3(KOD_OP_INT_DIVIDE, (r0), (r1), (imm)))
 #define kod_instr_remainder(r0, r1, r2)      (kod_instr3(KOD_OP_REMAINDER, (r0), (r1), (r2)))
 #define kod_instr_remainder_int(r0, r1, imm) (kod_instr3(KOD_OP_REMAINDER_INT, (r0), (r1), (imm)))
+#define kod_instr_int_remainder(r0, r1, imm) (kod_instr3(KOD_OP_INT_REMAINDER, (r0), (r1), (imm)))
 #define kod_instr_negate(r0, r1)             (kod_instr2(KOD_OP_NEGATE, (r0), (r1)))
 #define kod_instr_not(r0, r1)                (kod_instr2(KOD_OP_NOT, (r0), (r1)))
 #define kod_instr_equal(r0, r1, r2)          (kod_instr3(KOD_OP_EQUAL, (r0), (r1), (r2)))
@@ -79,16 +83,20 @@ typedef enum
   KOD_OP_MOVE_TO_REF,   // MoveToRef    <r0>  <r1>
   KOD_OP_GET_NONLOCAL,  // GetNonLocal  <r0>  <idx>
   KOD_OP_SET_NONLOCAL,  // SetNonLocal  <r0>  <idx>
+  KOD_OP_RANGE,         // Range        <r0>  <r1>  <r2>
   KOD_OP_ADD,           // Add          <r0>  <r1>  <r2>
   KOD_OP_ADD_INT,       // AddInt       <r0>  <r1>  <imm>
   KOD_OP_SUBTRACT,      // Subtract     <r0>  <r1>  <r2>
   KOD_OP_SUBTRACT_INT,  // SubtractInt  <r0>  <r1>  <imm>
+  KOD_OP_INT_SUBTRACT,  // IntSubtract  <r0>  <r1>  <imm>
   KOD_OP_MULTIPLY,      // Multiply     <r0>  <r1>  <r2>
   KOD_OP_MULTIPLY_INT,  // MultiplyInt  <r0>  <r1>  <imm>
   KOD_OP_DIVIDE,        // Divide       <r0>  <r1>  <r2>
   KOD_OP_DIVIDE_INT,    // DivideInt    <r0>  <r1>  <imm>
+  KOD_OP_INT_DIVIDE,    // IntDivide    <r0>  <r1>  <imm>
   KOD_OP_REMAINDER,     // Remainder    <r0>  <r1>  <r2>
   KOD_OP_REMAINDER_INT, // RemainderInt <r0>  <r1>  <imm>
+  KOD_OP_INT_REMAINDER, // IntRemainder <r0>  <r1>  <imm>
   KOD_OP_NEGATE,        // Negate       <r0>  <r1>
   KOD_OP_NOT,           // Not          <r0>  <r1>
   KOD_OP_EQUAL,         // Equal        <r0>  <r1>  <r2>

@@ -28,6 +28,7 @@
 #define kod_is_null(v)      (kod_type(v) == KOD_TYPE_NULL)
 #define kod_is_boolean(v)   (kod_type(v) == KOD_TYPE_BOOLEAN)
 #define kod_is_number(v)    (kod_type(v) == KOD_TYPE_NUMBER)
+#define kod_is_integer(v)   (kod_is_number(v) && (v).asNumber == (int64_t) (v).asNumber)
 #define kod_is_rune(v)      (kod_type(v) == KOD_TYPE_RUNE)
 #define kod_is_string(v)    (kod_type(v) == KOD_TYPE_STRING)
 #define kod_is_range(v)     (kod_type(v) == KOD_TYPE_RANGE)
